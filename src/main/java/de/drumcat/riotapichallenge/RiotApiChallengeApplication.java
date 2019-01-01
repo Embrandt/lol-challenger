@@ -9,6 +9,5 @@ public class RiotApiChallengeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RiotApiChallengeApplication.class, args);
 	}
-
 }
 
