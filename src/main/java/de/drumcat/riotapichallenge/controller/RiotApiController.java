@@ -1,23 +1,25 @@
 package de.drumcat.riotapichallenge.controller;
 
-import de.drumcat.riotapichallenge.service.ChatApiService;
+import de.drumcat.riotapichallenge.service.ClubApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class RiotApiController {
 
     @Autowired
-    ChatApiService chatApiService;
+    ClubApiService clubApiService;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/messages", produces = "text/plain")
-    public @ResponseBody
-    String getLastChatMessage() {
-        return chatApiService.getLastChatMessage();
+    @RequestMapping(value = "/clubs",
+            produces = {"application/json;charset=UTF-8"},
+            method = RequestMethod.GET)
+    public ResponseEntity<String> getLastChatMessage() {
+        String lastChatMessage = clubApiService.getClubs();
+        return new ResponseEntity<>(lastChatMessage, HttpStatus.OK);
     }
 
 }

@@ -15,7 +15,7 @@ import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 
 
-@SpringBootApplication(scanBasePackages = "de.drumcat.riotapichallenge")
+@SpringBootApplication
 public class RiotApiChallengeApplication {
 
     private final static Logger logger = LoggerFactory
