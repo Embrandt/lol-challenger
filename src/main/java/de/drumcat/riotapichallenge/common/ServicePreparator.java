@@ -1,8 +1,11 @@
 package de.drumcat.riotapichallenge.common;
 
+import de.drumcat.riotapichallenge.client.domain.RiotApiClient;
 import org.fusesource.restygwt.client.Defaults;
 import org.fusesource.restygwt.client.Resource;
+import org.fusesource.restygwt.client.RestServiceProxy;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.logging.Logger;
 
@@ -11,6 +14,9 @@ public class ServicePreparator {
 
 	private static Logger logger = Logger.getLogger(ServicePreparator.class
 			.getName());
+
+	@Inject
+	private RiotApiClient riotApiClient;
 
 
 	private void initServices() {
@@ -25,7 +31,7 @@ public class ServicePreparator {
 	private void initDomainService() {
 		// Domain Service
 		Resource resource = new Resource("");
-		//((RestServiceProxy) arbeitslisteClient).setResource(resource);
+		((RestServiceProxy) riotApiClient).setResource(resource);
 
 	}
 	public void prepare() {

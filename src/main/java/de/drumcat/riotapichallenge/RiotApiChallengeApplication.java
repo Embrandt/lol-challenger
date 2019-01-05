@@ -73,7 +73,6 @@ public class RiotApiChallengeApplication {
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate;
-
     }
 }
 
