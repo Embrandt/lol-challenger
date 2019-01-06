@@ -1,6 +1,7 @@
 package de.drumcat.riotapichallenge.service;
 
-import de.drumcat.riotapichallenge.RiotApiChallengeApplication;
+import de.drumcat.riotapichallengefx.RiotApiChallengeFxApplication;
+import de.drumcat.riotapichallengefx.service.StatsApiService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.client.ResourceAccessException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-        RiotApiChallengeApplication.class})
+        RiotApiChallengeFxApplication.class})
 @TestPropertySource(locations = {
         "classpath:application.properties"})
 

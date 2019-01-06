@@ -1,4 +1,4 @@
-package de.drumcat.riotapichallenge.domain;
+package de.drumcat.riotapichallengefx.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package de.drumcat.riotapichallenge.domain;
+package de.drumcat.riotapichallengefx.domain;
 
 public class RerollPointsDto {
     private float currentPoints;
