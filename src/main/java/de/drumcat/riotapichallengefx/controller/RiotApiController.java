@@ -1,9 +1,9 @@
-package de.drumcat.riotapichallenge.controller;
+package de.drumcat.riotapichallengefx.controller;
 
-import de.drumcat.riotapichallenge.domain.SummonerDto;
-import de.drumcat.riotapichallenge.domain.UserStatsDto;
-import de.drumcat.riotapichallenge.service.BuddyApiService;
-import de.drumcat.riotapichallenge.service.StatsApiService;
+import de.drumcat.riotapichallengefx.domain.SummonerDto;
+import de.drumcat.riotapichallengefx.domain.UserStatsDto;
+import de.drumcat.riotapichallengefx.service.BuddyApiService;
+import de.drumcat.riotapichallengefx.service.StatsApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class RiotApiController {
     @RequestMapping(value = "/buddies",
             produces = {"application/json;charset=UTF-8"},
             method = RequestMethod.GET)
-    public ResponseEntity<String> getBuddies() {
-        String buddies = buddyApiService.getBuddies();
+    public ResponseEntity<List<String>> getBuddies() {
+        List<String> buddies = buddyApiService.getBuddies();
         return new ResponseEntity<>(buddies, HttpStatus.OK);
     }
 

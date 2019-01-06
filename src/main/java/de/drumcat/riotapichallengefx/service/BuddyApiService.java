@@ -1,8 +1,10 @@
-package de.drumcat.riotapichallenge.service;
+package de.drumcat.riotapichallengefx.service;
 
-import de.drumcat.riotapichallenge.domain.SummonerDto;
+import de.drumcat.riotapichallengefx.domain.SummonerDto;
+import de.drumcat.riotapichallengefx.domain.UserStatsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Service
 public class BuddyApiService {
@@ -26,8 +30,9 @@ public class BuddyApiService {
     @Autowired
     RestTemplate restTemplate;
 
-    public String getBuddies() {
-        ResponseEntity<String> response = restTemplate.exchange(baseUrl + port +"/lol-game-client-chat/v1/buddies", HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), String.class);
+    public List<String> getBuddies() {
+        ResponseEntity<List<String>> response = restTemplate.exchange(baseUrl + port +"/lol-game-client-chat/v1/buddies", HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<String>>(){
+        });
 
         return response.getBody();
     }
