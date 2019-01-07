@@ -2,6 +2,7 @@ package de.drumcat.riotapichallengefx.service;
 
 import de.drumcat.riotapichallengefx.domain.SummonerDto;
 import de.drumcat.riotapichallengefx.domain.UserStatsDto;
+import de.drumcat.riotapichallengefx.utils.PropertiesLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,31 +16,30 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadProperties;
+
 @Service
 public class BuddyApiService {
 
-    @Value("${rift.explorer.key}")
-    String key;
+    static final String KEY = loadProperties("application.properties").get("rift.explorer.key").toString();
 
-    @Value("${rift.explorer.port}")
-    String port;
+    static final String PORT = loadProperties("application.properties").get("rift.explorer.port").toString();
 
-    @Value("${api.base.url}")
-    String baseUrl;
+    static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();
 
-    @Autowired
-    RestTemplate restTemplate;
 
     public List<String> getBuddies() {
-        ResponseEntity<List<String>> response = restTemplate.exchange(baseUrl + port +"/lol-game-client-chat/v1/buddies", HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<String>>(){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<String>> response = restTemplate.exchange(BASE_URL + PORT +"/lol-game-client-chat/v1/buddies", HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<String>>(){
         });
 
         return response.getBody();
     }
 
     public SummonerDto getSummonerByName(String user) {
+        RestTemplate restTemplate = new RestTemplate();
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(baseUrl + port +"/lol-summoner/v1/summoners")
+                .fromHttpUrl(BASE_URL + PORT +"/lol-summoner/v1/summoners")
                 .queryParam("name", user);
         String uriString = builder.build().encode().toUriString();
 
@@ -51,7 +51,7 @@ public class BuddyApiService {
     private HttpHeaders createHttpHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",
-                "Basic " + key);
+                "Basic " + KEY);
 
         return headers;
     }
