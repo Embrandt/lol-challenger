@@ -12,9 +12,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MainController {
 
-    @Autowired
-    private BuddyApiService buddyApiService;
-
     @FXML
     private ListView listView;
 
@@ -24,6 +21,7 @@ public class MainController {
     }
     @FXML
     public void initialize() {
+        BuddyApiService buddyApiService = new BuddyApiService();
         listView.setItems(FXCollections.observableArrayList(buddyApiService.getBuddies()));
     }
 }

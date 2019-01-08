@@ -34,7 +34,7 @@ public class RiotApiChallengeFxApplication extends Application {
                 });
     }
 
-    public void main(String[] args){
+    public static void main(String[] args){
             launch(args);
 
         // Abschalten der Verifikation von SSL-Zertifikaten.
@@ -70,7 +70,7 @@ public class RiotApiChallengeFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("FXML-Beispiel");
         primaryStage.setScene(new Scene(root, 100, 57));
         primaryStage.show();
