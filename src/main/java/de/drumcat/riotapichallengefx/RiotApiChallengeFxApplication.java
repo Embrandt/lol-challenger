@@ -72,7 +72,7 @@ public class RiotApiChallengeFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
-        primaryStage.setTitle("FXML-Beispiel");
+        primaryStage.setTitle("Riot API Challenge 2018");
         primaryStage.setScene(new Scene(root, 100, 57));
         primaryStage.show();
     }

@@ -30,10 +30,6 @@ public class ChartController {
     public AreaChart<String, Number> visionPerHourChart;
     public AreaChart<String, Number> roamDominanceChart;
     public AreaChart<String, Number> killConversionChart;
-    @Autowired
-    private StatsApiService statsApiService;
-    @Autowired
-    private BuddyApiService buddyApiService;
 
     /**
      * Filter list of user stats according to parameters set previously
@@ -116,6 +112,8 @@ public class ChartController {
      * @param summonerName name of the summoner for which to show data
      */
     public void showUserData(String summonerName) {
+        StatsApiService statsApiService = new StatsApiService();
+        BuddyApiService buddyApiService = new BuddyApiService();
         if (!nameToPUUID.containsKey(summonerName)) {
             nameToPUUID.put(summonerName, buddyApiService.getSummonerByName(summonerName).getPuuid());
             List<UserStatsDto> userStatsByPuuid = statsApiService.getUserStatsByPuuid(nameToPUUID.get(summonerName));
@@ -129,6 +127,7 @@ public class ChartController {
 
     @FXML
     public void initialize() {
+        StatsApiService statsApiService = new StatsApiService();
         // TODO this should be the current logged in summoner
         showUserData("BADembrandt");
         List<UserStatsDto> otheruser = statsApiService.getUserStatsByPuuid("2bef99bb-3544-510a-a1d5-c184f89d67b0");
