@@ -3,14 +3,14 @@ package de.drumcat.riotapichallengefx.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StatsDto {
-    CareerStatsDto careerStatsDto;
+    private DiagramStats careerStatsDto;
 
     @JsonProperty(value = "CareerStats.js")
-    public CareerStatsDto getCareerStats() {
+    public DiagramStats getCareerStats() {
         return careerStatsDto;
     }
 
-    public void setCareerStats(CareerStatsDto careerStatsDto) {
+    public void setCareerStats(DiagramStats careerStatsDto) {
         this.careerStatsDto = careerStatsDto;
     }
 }

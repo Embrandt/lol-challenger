@@ -1,18 +1,18 @@
 package de.drumcat.riotapichallengefx.domain;
 
 public class UserStatsDto {
-    private float championId;
-    private float gameId;
-    private float gamesCalculated;
+    private int championId;
+    private long gameId;
+    private int gamesCalculated;
     private String lane;
     private String platformId;
     private String puuid;
     private String queueType;
     private String role;
-    private float season;
-    StatsDto statsDto;
-    private float teamId;
-    private float timestamp;
+    private int season;
+    private StatsDto statsDto;
+    private int teamId;
+    private long timestamp;
 
 
     // Getter Methods
@@ -67,15 +67,15 @@ public class UserStatsDto {
 
     // Setter Methods
 
-    public void setChampionId(float championId) {
+    public void setChampionId(int championId) {
         this.championId = championId;
     }
 
-    public void setGameId(float gameId) {
+    public void setGameId(long gameId) {
         this.gameId = gameId;
     }
 
-    public void setGamesCalculated(float gamesCalculated) {
+    public void setGamesCalculated(int gamesCalculated) {
         this.gamesCalculated = gamesCalculated;
     }
 
@@ -99,7 +99,7 @@ public class UserStatsDto {
         this.role = role;
     }
 
-    public void setSeason(float season) {
+    public void setSeason(int season) {
         this.season = season;
     }
 
@@ -107,11 +107,11 @@ public class UserStatsDto {
         this.statsDto = statsDto;
     }
 
-    public void setTeamId(float teamId) {
+    public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
 
-    public void setTimestamp(float timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 }
