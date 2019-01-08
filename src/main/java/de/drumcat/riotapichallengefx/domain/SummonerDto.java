@@ -9,7 +9,7 @@ public class SummonerDto {
     private float percentCompleteForNextLevel;
     private float profileIconId;
     private String puuid;
-    RerollPointsDto rerollPointsDto;
+    private RerollPointsDto rerollPointsDto;
     private float summonerId;
     private float summonerLevel;
     private float xpSinceLastLevel;
