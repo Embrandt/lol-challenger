@@ -35,7 +35,6 @@ public class RiotApiChallengeFxApplication extends Application {
     }
 
     public static void main(String[] args){
-            launch(args);
 
         // Abschalten der Verifikation von SSL-Zertifikaten.
         TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -66,6 +65,8 @@ public class RiotApiChallengeFxApplication extends Application {
         } catch (GeneralSecurityException e) {
             logger.error("SSL Exception", e);
         }
+
+        launch(args);
     }
 
     @Override
