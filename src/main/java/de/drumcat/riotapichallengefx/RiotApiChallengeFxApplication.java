@@ -2,18 +2,11 @@ package de.drumcat.riotapichallengefx;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -22,12 +15,10 @@ import javax.net.ssl.X509TrustManager;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 
-@SpringBootApplication
 public class RiotApiChallengeFxApplication extends Application {
 
 
-    private final static Logger logger = LoggerFactory
-            .getLogger(RiotApiChallengeFxApplication.class);
+    private static final Logger logger = LogManager.getLogger(RiotApiChallengeFxApplication.class);
 
     static {
         // Abschalten der Verifikation von SLL-Zertifikaten.
@@ -43,13 +34,7 @@ public class RiotApiChallengeFxApplication extends Application {
                 });
     }
 
-    private ConfigurableApplicationContext context;
-    private Parent rootNode;
-
-    @Override
-    public void init() throws Exception {
-        SpringApplicationBuilder builder = new SpringApplicationBuilder(RiotApiChallengeFxApplication.class);
-        context = builder.run(getParameters().getRaw().toArray(new String[0]));
+    public static void main(String[] args){
 
         // Abschalten der Verifikation von SSL-Zertifikaten.
         TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -81,30 +66,15 @@ public class RiotApiChallengeFxApplication extends Application {
             logger.error("SSL Exception", e);
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        loader.setControllerFactory(context::getBean);
-        rootNode = loader.load();
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate;
+        launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-        double width = visualBounds.getWidth();
-        double height = visualBounds.getHeight();
-
-        primaryStage.setScene(new Scene(rootNode, width, height));
-        primaryStage.centerOnScreen();
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
+        primaryStage.setTitle("Riot API Challenge 2018");
+        primaryStage.setScene(new Scene(root, 100, 57));
         primaryStage.show();
     }
 
-    @Override
-    public void stop() throws Exception {
-        context.close();
-    }
 }

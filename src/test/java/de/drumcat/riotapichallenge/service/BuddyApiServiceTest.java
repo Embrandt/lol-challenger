@@ -1,33 +1,24 @@
 package de.drumcat.riotapichallenge.service;
 
-import de.drumcat.riotapichallengefx.RiotApiChallengeFxApplication;
 import de.drumcat.riotapichallengefx.service.BuddyApiService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.runners.JUnit4;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.ResourceAccessException;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-        RiotApiChallengeFxApplication.class})
-@TestPropertySource(locations = {
-        "classpath:application.properties"})
-
+@RunWith(JUnit4.class)
 public class BuddyApiServiceTest {
-
-    @Autowired
-    BuddyApiService buddyApiService;
 
     @Test(expected = ResourceAccessException.class)
     public void testGetBuddies() {
+        BuddyApiService buddyApiService = new BuddyApiService();
         buddyApiService.getBuddies();
     }
 
     @Test(expected = ResourceAccessException.class)
     public void testGetSummonerByName() {
+        BuddyApiService buddyApiService = new BuddyApiService();
         buddyApiService.getSummonerByName("aischnei");
     }
 }

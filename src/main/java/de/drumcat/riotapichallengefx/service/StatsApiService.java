@@ -13,23 +13,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadProperties;
+
 @Service
 public class StatsApiService {
 
-    @Value("${rift.explorer.key}")
-    String key;
+    static final String KEY = loadProperties("application.properties").get("rift.explorer.key").toString();
 
-    @Value("${rift.explorer.port}")
-    String port;
+    static final String PORT = loadProperties("application.properties").get("rift.explorer.port").toString();;
 
-    @Value("${api.base.url}")
-    String baseUrl;
-
-    @Autowired
-    RestTemplate restTemplate;
+    static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();;
 
     public List<UserStatsDto> getUserStatsByPuuid(String puuid) {
-        ResponseEntity<List<UserStatsDto>> response = restTemplate.exchange(baseUrl + port + "/lol-career-stats/v1/summoner-games/"+ puuid, HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<UserStatsDto>>(){
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<UserStatsDto>> response = restTemplate.exchange(BASE_URL + PORT + "/lol-career-stats/v1/summoner-games/"+ puuid, HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<UserStatsDto>>(){
         });
 
         return response.getBody();
@@ -38,7 +35,7 @@ public class StatsApiService {
     private HttpHeaders createHttpHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",
-                "Basic " + key);
+                "Basic " + KEY);
 
         return headers;
     }
