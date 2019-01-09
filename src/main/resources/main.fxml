@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.drumcat.riotapichallengefx.ui.MainController">
+<?import javafx.scene.layout.HBox?>
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.drumcat.riotapichallengefx.ui.MainController">
     <children>
         <fx:include fx:id="buddyListView" source="buddylist.fxml" />
         <fx:include fx:id="chartsView" source="charts.fxml" />
     </children>
-</VBox>
+</HBox>

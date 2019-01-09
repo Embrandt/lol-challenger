@@ -20,8 +20,5 @@ public class MainController {
     private ChartController chartController;
 
     public void initialize() {
-        System.out.println(buddyListController);
-        System.out.println(chartController);
-//        buddyListController.initialize();
     }
 }
