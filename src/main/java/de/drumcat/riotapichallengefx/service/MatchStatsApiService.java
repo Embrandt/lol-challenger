@@ -7,15 +7,7 @@ import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.api.endpoints.match.dto.*;
 import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import net.rithms.riot.constant.Platform;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadProperties;
 

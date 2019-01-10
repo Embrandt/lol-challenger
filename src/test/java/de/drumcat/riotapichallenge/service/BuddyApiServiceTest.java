@@ -6,7 +6,6 @@ import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.ResourceAccessException;
 
 import static org.junit.Assert.assertNotNull;

@@ -1,10 +1,8 @@
 package de.drumcat.riotapichallengefx.service;
 
-import de.drumcat.riotapichallengefx.domain.ParticipantStatsTimeline;
 import net.rithms.riot.api.ApiConfig;
 import net.rithms.riot.api.RiotApi;
 import net.rithms.riot.api.RiotApiException;
-import net.rithms.riot.api.endpoints.match.dto.*;
 import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import net.rithms.riot.constant.Platform;
 import org.springframework.core.ParameterizedTypeReference;
