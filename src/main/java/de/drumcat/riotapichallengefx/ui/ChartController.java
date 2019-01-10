@@ -3,11 +3,11 @@ package de.drumcat.riotapichallengefx.ui;
 import de.drumcat.riotapichallengefx.domain.DiagramStats;
 import de.drumcat.riotapichallengefx.domain.UserStatsDto;
 import de.drumcat.riotapichallengefx.service.BuddyApiService;
-import de.drumcat.riotapichallengefx.service.StatsApiService;
+import de.drumcat.riotapichallengefx.service.ClientStatsApiService;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.XYChart;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.rithms.riot.api.RiotApiException;
 import org.springframework.stereotype.Controller;
 
 import java.util.*;
@@ -111,12 +111,12 @@ public class ChartController {
      *
      * @param summonerName name of the summoner for which to show data
      */
-    public void showUserData(String summonerName) {
-        StatsApiService statsApiService = new StatsApiService();
+    public void showUserData(String summonerName) throws RiotApiException {
+        ClientStatsApiService clientStatsApiService = new ClientStatsApiService();
         BuddyApiService buddyApiService = new BuddyApiService();
         if (!nameToPUUID.containsKey(summonerName)) {
             nameToPUUID.put(summonerName, buddyApiService.getSummonerByName(summonerName).getPuuid());
-            List<UserStatsDto> userStatsByPuuid = statsApiService.getUserStatsByPuuid(nameToPUUID.get(summonerName));
+            List<UserStatsDto> userStatsByPuuid = clientStatsApiService.getUserStatsByPuuid(nameToPUUID.get(summonerName));
             userStatsByPuuid.sort(Comparator.comparing(UserStatsDto::getTimestamp).reversed());
             pUUIDToStats.put(nameToPUUID.get(summonerName), userStatsByPuuid);
         }
@@ -126,11 +126,11 @@ public class ChartController {
     }
 
     @FXML
-    public void initialize() {
-        StatsApiService statsApiService = new StatsApiService();
+    public void initialize() throws RiotApiException {
+        ClientStatsApiService clientStatsApiService = new ClientStatsApiService();
         // TODO this should be the current logged in summoner
         showUserData("BADembrandt");
-        List<UserStatsDto> otheruser = statsApiService.getUserStatsByPuuid("2bef99bb-3544-510a-a1d5-c184f89d67b0");
+        List<UserStatsDto> otheruser = clientStatsApiService.getUserStatsByPuuid("2bef99bb-3544-510a-a1d5-c184f89d67b0");
         otheruser.sort(Comparator.comparing(UserStatsDto::getTimestamp).reversed());
     }
 }

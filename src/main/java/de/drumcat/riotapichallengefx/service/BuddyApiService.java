@@ -1,10 +1,12 @@
 package de.drumcat.riotapichallengefx.service;
 
-import de.drumcat.riotapichallengefx.domain.SummonerDto;
-import de.drumcat.riotapichallengefx.domain.UserStatsDto;
-import de.drumcat.riotapichallengefx.utils.PropertiesLoader;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import de.drumcat.riotapichallengefx.domain.ParticipantStatsTimeline;
+import net.rithms.riot.api.ApiConfig;
+import net.rithms.riot.api.RiotApi;
+import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.api.endpoints.match.dto.*;
+import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
+import net.rithms.riot.constant.Platform;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class BuddyApiService {
 
     static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();
 
+    static final String WEB_API_KEY = loadProperties("application.properties").get("web.api.key").toString();
+
+    static final RiotApi RIOT_API_JAVA = new RiotApi(new ApiConfig().setKey(WEB_API_KEY));
+
+    static final Platform PLATFORM = Platform.EUW;
+
+
 
     public List<String> getBuddies() {
         RestTemplate restTemplate = new RestTemplate();
@@ -36,18 +44,11 @@ public class BuddyApiService {
         return response.getBody();
     }
 
-    public SummonerDto getSummonerByName(String user) {
-        RestTemplate restTemplate = new RestTemplate();
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromHttpUrl(BASE_URL + PORT +"/lol-summoner/v1/summoners")
-                .queryParam("name", user);
-        String uriString = builder.build().encode().toUriString();
+    public Summoner getSummonerByName(String user) throws RiotApiException {
+        Summoner summoner = RIOT_API_JAVA.getSummonerByName(PLATFORM, user);
 
-        ResponseEntity<SummonerDto> response = restTemplate.exchange(uriString, HttpMethod.GET, new HttpEntity<>(createHttpHeaders()), SummonerDto.class);
-
-        return response.getBody();
+        return summoner;
     }
-
     private HttpHeaders createHttpHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",

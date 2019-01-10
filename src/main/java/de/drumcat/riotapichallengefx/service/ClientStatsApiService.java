@@ -16,7 +16,7 @@ import java.util.List;
 import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadProperties;
 
 @Service
-public class StatsApiService {
+public class ClientStatsApiService {
 
     static final String KEY = loadProperties("application.properties").get("rift.explorer.key").toString();
 

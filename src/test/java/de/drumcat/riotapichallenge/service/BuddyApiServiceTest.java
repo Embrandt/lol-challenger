@@ -1,11 +1,15 @@
 package de.drumcat.riotapichallenge.service;
 
 import de.drumcat.riotapichallengefx.service.BuddyApiService;
+import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.ResourceAccessException;
+
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(JUnit4.class)
 public class BuddyApiServiceTest {
@@ -16,9 +20,13 @@ public class BuddyApiServiceTest {
         buddyApiService.getBuddies();
     }
 
-    @Test(expected = ResourceAccessException.class)
-    public void testGetSummonerByName() {
+    @Test
+    public void testGetSummonerByName() throws RiotApiException {
         BuddyApiService buddyApiService = new BuddyApiService();
-        buddyApiService.getSummonerByName("aischnei");
+        Summoner summoner = buddyApiService.getSummonerByName("aischnei");
+
+        assertNotNull(summoner);
+
+
     }
 }
