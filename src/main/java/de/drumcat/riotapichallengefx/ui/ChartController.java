@@ -115,7 +115,7 @@ public class ChartController {
         ClientStatsApiService clientStatsApiService = new ClientStatsApiService();
         BuddyApiService buddyApiService = new BuddyApiService();
         if (!nameToPUUID.containsKey(summonerName)) {
-            nameToPUUID.put(summonerName, buddyApiService.getSummonerByName(summonerName).getPuuid());
+//            nameToPUUID.put(summonerName, buddyApiService.getSummonerByName(summonerName).getPuuid());
             List<UserStatsDto> userStatsByPuuid = clientStatsApiService.getUserStatsByPuuid(nameToPUUID.get(summonerName));
             userStatsByPuuid.sort(Comparator.comparing(UserStatsDto::getTimestamp).reversed());
             pUUIDToStats.put(nameToPUUID.get(summonerName), userStatsByPuuid);
