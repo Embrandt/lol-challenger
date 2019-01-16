@@ -1,9 +1,11 @@
 package de.drumcat.riotapichallengefx;
 
+import de.drumcat.riotapichallengefx.utils.ClientPortParserService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,6 +14,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import java.awt.*;
+import java.io.File;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 
@@ -71,6 +75,12 @@ public class RiotApiChallengeFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        final FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(primaryStage);
+        ClientPortParserService clientPortParserService = new ClientPortParserService();
+        clientPortParserService.parseClientLockfile(file.getAbsolutePath());
+
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("Riot API Challenge 2018");
         primaryStage.setScene(new Scene(root, 100, 57));

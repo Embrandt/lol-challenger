@@ -6,6 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Base64;
+
+import static org.junit.Assert.assertEquals;
+
 @RunWith(JUnit4.class)
 public class MatchStatsApiServiceTest {
 
@@ -25,6 +29,14 @@ public class MatchStatsApiServiceTest {
     public void testGetMatchById() throws RiotApiException {
         MatchStatsApiService matchStatsApiService = new MatchStatsApiService();
         matchStatsApiService.getMatchByMatchId(1L);
+    }
+
+    @Test
+    public void testBase64Encoder(){
+        String base64String = Base64.getEncoder().encodeToString("riot:iBJ3e_vvj-0PR4NLMWTNlQ".getBytes());
+
+        assertEquals(base64String, "cmlvdDppQkozZV92dmotMFBSNE5MTVdUTmxR");
+
     }
 
 
