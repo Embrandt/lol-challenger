@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="de.drumcat.riotapichallengefx.ui.ChallengeControler">
+    <children>
+        <GridPane fx:id="startingChallenge" alignment="BASELINE_CENTER" prefHeight="300.0" prefWidth="478.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints valignment="CENTER" vgrow="SOMETIMES"/>
+                <RowConstraints valignment="CENTER" vgrow="NEVER"/>
+                <RowConstraints valignment="CENTER" vgrow="NEVER"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <ChoiceBox fx:id="laneChoice" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+                <ChoiceBox fx:id="queueChoice" prefWidth="150.0" GridPane.rowIndex="2"/>
+                <Button fx:id="buttME" mnemonicParsing="false" text="Start Challenge" GridPane.columnIndex="1"
+                        GridPane.columnSpan="3" GridPane.rowIndex="2"/>
+                <Label text="vs." GridPane.columnIndex="2"/>
+                <Label text="Queue" GridPane.rowIndex="1"/>
+                <Label text="Lane" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                <Label fx:id="yourNameLabel" text="You" GridPane.columnIndex="1"/>
+                <Label fx:id="enemyNameLabel" text="Enemy" GridPane.columnIndex="3"/>
+                <Label fx:id="yourPointsLabel" text="0"/>
+                <Label fx:id="enemyPointsLabel" text="0" GridPane.columnIndex="4"/>
+            </children>
+        </GridPane>
+        <Pane fx:id="activeChallenge" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0" visible="false"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <children>
+                <LineChart fx:id="standingChart" legendSide="RIGHT">
+                    <xAxis>
+                        <NumberAxis autoRanging="false" minorTickCount="0" tickMarkVisible="false" tickUnit="1.0"
+                                    upperBound="10.0"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis autoRanging="false" label="Points" prefHeight="444.0" prefWidth="28.0" side="LEFT"
+                                    upperBound="10.0"/>
+                    </yAxis>
+                </LineChart>
+            </children>
+        </Pane>
+
+    </children>
+
+</AnchorPane>
