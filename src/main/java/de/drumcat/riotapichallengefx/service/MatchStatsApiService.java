@@ -24,21 +24,21 @@ public class MatchStatsApiService {
     public MatchList getMatchListByUser(String user) throws RiotApiException {
         BuddyApiService buddyApiService = new BuddyApiService();
         Summoner summonerByName = buddyApiService.getSummonerByName(user);
-        MatchList matchList = RIOT_API_JAVA.getMatchListByAccountId(PLATFORM, summonerByName.getAccountId());
 
-        return matchList;
+        return RIOT_API_JAVA.getMatchListByAccountId(PLATFORM, summonerByName.getAccountId());
     }
 
     public Match getMatchByMatchId(long gameId) throws RiotApiException {
-        Match match = RIOT_API_JAVA.getMatch(PLATFORM, gameId);
 
-        return match;
+        return RIOT_API_JAVA.getMatch(PLATFORM, gameId);
     }
 
     public ParticipantStatsTimeline getGameStatsAndTimelineByUser(long gameId, String user) throws RiotApiException {
         ParticipantStatsTimeline participantStatsTimeline = new ParticipantStatsTimeline();
 
         Match matchByMatchId = getMatchByMatchId(gameId);
+        long gameTime = matchByMatchId.getGameDuration();
+        participantStatsTimeline.setTimePlayed(gameTime);
         Participant participantBySummonerName = matchByMatchId.getParticipantBySummonerName(user);
         ParticipantStats stats = participantBySummonerName.getStats();
         ParticipantTimeline timeline = participantBySummonerName.getTimeline();
