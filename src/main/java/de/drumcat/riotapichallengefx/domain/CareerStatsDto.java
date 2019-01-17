@@ -1,5 +1,7 @@
 package de.drumcat.riotapichallengefx.domain;
 
+import javax.persistence.*;
+
 public class CareerStatsDto {
     private float assists;
     private float ccScore;

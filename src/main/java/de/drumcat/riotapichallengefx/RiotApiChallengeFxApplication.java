@@ -1,5 +1,6 @@
 package de.drumcat.riotapichallengefx;
 
+import de.drumcat.riotapichallengefx.domain.PropertiesDto;
 import de.drumcat.riotapichallengefx.utils.ClientPortParserService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.awt.*;
 import java.io.File;
 import java.security.GeneralSecurityException;
@@ -76,10 +80,23 @@ public class RiotApiChallengeFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        final FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(primaryStage);
-        ClientPortParserService clientPortParserService = new ClientPortParserService();
-        clientPortParserService.parseClientLockfile(file.getAbsolutePath());
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
+        EntityManager entityManager = factory.createEntityManager();
+
+        File file = null;
+        if(entityManager.find(PropertiesDto.class, "lockfilepath") == null) {
+            final FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Please select lockfile from /Riot Games/League of Legends");
+            file = fileChooser.showOpenDialog(primaryStage);
+            ClientPortParserService clientPortParserService = new ClientPortParserService();
+            clientPortParserService.parseClientLockfile(file.getAbsolutePath());
+            PropertiesDto propertiesDto =  new PropertiesDto();
+            propertiesDto.setKey("lockfilepath");
+            propertiesDto.setValue(file.getAbsolutePath());
+            entityManager.getTransaction().begin();
+            entityManager.persist(propertiesDto);
+            entityManager.getTransaction().commit();
+        }
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("Riot API Challenge 2018");
