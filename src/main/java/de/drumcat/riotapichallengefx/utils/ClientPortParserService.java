@@ -3,8 +3,11 @@ package de.drumcat.riotapichallengefx.utils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Properties;
+
+import static java.lang.System.out;
 
 public class ClientPortParserService {
 
@@ -22,8 +25,19 @@ public class ClientPortParserService {
                 port = client[2];
                 key = Base64.getEncoder().encodeToString(("riot:"+client[3]).getBytes());
             }
-        File oldProperties = new File(getClass().getClassLoader().getResource("application.properties").getFile());
-        FileUtils.writeStringToFile(oldProperties, "\n rift.explorer.key=" + key +"\n rift.explorer.port=" + port , true);
+
+        InputStream propertyAsStream = getClass().getClassLoader().getResourceAsStream("application.properties");
+        String pathProp = getClass().getClassLoader().getResource("application.properties").getPath();
+        Properties props = new Properties();
+        props.load(propertyAsStream);
+        propertyAsStream.close();
+
+        FileOutputStream out = new FileOutputStream(pathProp);
+        props.setProperty("rift.explorer.key", key);
+        props.setProperty("rift.explorer.port", port);
+        props.store(out, null);
+        out.close();
+
         return true;
     }
 }

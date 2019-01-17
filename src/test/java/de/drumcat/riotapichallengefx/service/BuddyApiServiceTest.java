@@ -1,4 +1,4 @@
-package de.drumcat.riotapichallenge.service;
+package de.drumcat.riotapichallengefx.service;
 
 import de.drumcat.riotapichallengefx.service.BuddyApiService;
 import net.rithms.riot.api.RiotApiException;
