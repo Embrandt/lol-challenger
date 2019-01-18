@@ -89,13 +89,17 @@ public class RiotApiChallengeFxApplication extends Application {
             fileChooser.setTitle("Please select lockfile from /Riot Games/League of Legends");
             file = fileChooser.showOpenDialog(primaryStage);
             ClientPortParserService clientPortParserService = new ClientPortParserService();
-            clientPortParserService.parseClientLockfile(file.getAbsolutePath());
-            PropertiesDto propertiesDto =  new PropertiesDto();
-            propertiesDto.setKey("lockfilepath");
-            propertiesDto.setValue(file.getAbsolutePath());
-            entityManager.getTransaction().begin();
-            entityManager.persist(propertiesDto);
-            entityManager.getTransaction().commit();
+            boolean findLockfilePath = clientPortParserService.parseClientLockfile(file.getAbsolutePath());
+            if(findLockfilePath){
+                PropertiesDto propertiesDto =  new PropertiesDto();
+                propertiesDto.setKey("lockfilepath");
+                propertiesDto.setValue(file.getAbsolutePath());
+                entityManager.getTransaction().begin();
+                entityManager.persist(propertiesDto);
+                entityManager.getTransaction().commit();
+            }else{
+                start(primaryStage);
+            }
         }
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
