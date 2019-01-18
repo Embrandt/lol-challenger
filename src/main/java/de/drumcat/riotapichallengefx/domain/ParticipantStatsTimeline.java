@@ -32,7 +32,8 @@ public class ParticipantStatsTimeline {
      * @return the KDA ratio
      */
     public double getKDARatio() {
-        return (double) (stats.getKills() + stats.getAssists()) / stats.getDeaths();
+        int deaths = Math.max(stats.getDeaths(), 1);
+        return (double) (stats.getKills() + stats.getAssists()) / deaths;
     }
 
     public float getKillParticipation() {
@@ -47,7 +48,8 @@ public class ParticipantStatsTimeline {
      * @return total damage dealt to champions per death
      */
     public long getDamagePerDeath() {
-        return stats.getTotalDamageDealtToChampions() / stats.getDeaths();
+        int deaths = Math.max(stats.getDeaths(), 1);
+        return stats.getTotalDamageDealtToChampions() / deaths;
     }
 
     /**
@@ -103,6 +105,9 @@ public class ParticipantStatsTimeline {
      * @return early cs advantage per minute
      */
     public double getEarlyCSAdvantage() {
+        if (timeline.getCsDiffPerMinDeltas() == null) {
+            return 0;
+        }
         return timeline.getCsDiffPerMinDeltas().get("0-10");
     }
 
