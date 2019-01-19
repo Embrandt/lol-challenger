@@ -105,7 +105,10 @@ public class RiotApiChallengeFxApplication extends Application {
         }else{
             PropertiesDto propertiesDto = entityManager.find(PropertiesDto.class, "lockfilepath");
             String lockFilePath = propertiesDto.getValue();
-            clientPortParserService.parseClientLockfile(lockFilePath);
+            boolean lockfileParsed = clientPortParserService.parseClientLockfile(lockFilePath);
+            if(!lockfileParsed){
+                start(primaryStage);
+            }
         }
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
