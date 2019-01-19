@@ -9,16 +9,18 @@ import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import net.rithms.riot.constant.Platform;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadProperties;
 
 @Service
 public class MatchStatsApiService {
 
-    static final String WEB_API_KEY = loadProperties("application.properties").get("web.api.key").toString();
+    private static final String WEB_API_KEY = loadProperties("application.properties").get("web.api.key").toString();
 
-    static final RiotApi RIOT_API_JAVA = new RiotApi(new ApiConfig().setKey(WEB_API_KEY));
+    private static final RiotApi RIOT_API_JAVA = new RiotApi(new ApiConfig().setKey(WEB_API_KEY));
 
-    static final Platform PLATFORM = Platform.EUW;
+    private static final Platform PLATFORM = Platform.EUW;
 
 
     public MatchList getMatchListByUser(String user) throws RiotApiException {
@@ -28,18 +30,34 @@ public class MatchStatsApiService {
         return RIOT_API_JAVA.getMatchListByAccountId(PLATFORM, summonerByName.getAccountId());
     }
 
+    /**
+     * Gets a list of matches played by given user
+     *
+     * @param user      name of the user
+     * @param beginTime earliest time to get games for
+     * @param queue     the queue in which the games were played
+     * @return a list of match reference data
+     * @throws RiotApiException is thrown if no data could be retrieved
+     */
+    public MatchList getMatchListByUser(String user, long beginTime, int queue) throws RiotApiException {
+        BuddyApiService buddyApiService = new BuddyApiService();
+        Summoner summonerByName = buddyApiService.getSummonerByName(user);
+
+        return RIOT_API_JAVA.getMatchListByAccountId(PLATFORM, summonerByName.getAccountId(), null,
+                Collections.singleton(queue), Collections.singleton(11),
+                beginTime, -1L, -1, -1);
+    }
     public Match getMatchByMatchId(long gameId) throws RiotApiException {
 
         return RIOT_API_JAVA.getMatch(PLATFORM, gameId);
     }
 
-    public ParticipantStatsTimeline getGameStatsAndTimelineByUser(long gameId, String user) throws RiotApiException {
+    public ParticipantStatsTimeline getGameStatsAndTimelineByUser(Match match, String user) {
         ParticipantStatsTimeline participantStatsTimeline = new ParticipantStatsTimeline();
 
-        Match matchByMatchId = getMatchByMatchId(gameId);
-        long gameTime = matchByMatchId.getGameDuration();
+        long gameTime = match.getGameDuration();
         participantStatsTimeline.setTimePlayed(gameTime);
-        Participant participantBySummonerName = matchByMatchId.getParticipantBySummonerName(user);
+        Participant participantBySummonerName = match.getParticipantBySummonerName(user);
         ParticipantStats stats = participantBySummonerName.getStats();
         ParticipantTimeline timeline = participantBySummonerName.getTimeline();
 

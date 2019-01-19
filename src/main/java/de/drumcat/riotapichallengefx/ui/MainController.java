@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import org.springframework.stereotype.Controller;
 
+
 @Controller
 public class MainController {
 
@@ -11,14 +12,15 @@ public class MainController {
     private Parent buddyListView;
 
     @FXML
-    private Parent chartsView;
+    private Parent challengeView;
 
     @FXML
-    private BuddyListController buddyListController;
+    private BuddyListController buddyListViewController;
 
     @FXML
-    private ChartController chartController;
+    private ChallengeControler challengeViewController;
 
     public void initialize() {
+        buddyListViewController.setChallengeController(challengeViewController);
     }
 }

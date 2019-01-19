@@ -17,22 +17,36 @@ import org.springframework.stereotype.Controller;
 public class BuddyListController {
 
     @FXML
-    private ListView listViewBuddy;
+    private ListView<String> listViewBuddy;
 
     @FXML
     private AnchorPane anchorPaneBuddy;
 
     @FXML
     private TextField textBoxBuddy;
+    private ChallengeControler challengeControler;
 
-    @FXML
-    public void handleMouseClick(MouseEvent arg0) {
-        System.out.println("clicked on " + listViewBuddy.getSelectionModel().getSelectedItem());
-    }
     @FXML
     public void initialize() {
         BuddyApiService buddyApiService = new BuddyApiService();
         createContent();
+    }
+
+    @FXML
+    public void handleMouseClick(MouseEvent arg0) {
+        String selectedItem = listViewBuddy.getSelectionModel().getSelectedItem();
+        challengeControler.showUser(selectedItem);
+        System.out.println("clicked on " + selectedItem);
+    }
+
+    /**
+     * Sets the controller for challenges to be able to trigger actions from here
+     * on the challenges
+     *
+     * @param challengeController controller for the challenge view
+     */
+    void setChallengeController(ChallengeControler challengeController) {
+        this.challengeControler = challengeController;
     }
 
     public Parent createContent() {

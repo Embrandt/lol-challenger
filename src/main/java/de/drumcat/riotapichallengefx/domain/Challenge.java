@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Challenge {
-    private String opponentName;
-    private String challengerName;
-    private List<ParticipantStatsTimeline> challengerGames;
-    private List<ParticipantStatsTimeline> opponentGames;
-    private String queue;
-    private String position;
+    private final String opponentName;
+    private final String challengerName;
+    private final List<ParticipantStatsTimeline> challengerGames;
+    private final List<ParticipantStatsTimeline> opponentGames;
+    private final int queue;
+    private final String position;
     private long timeStarted;
 
-    public Challenge(String opponentName, String challengerName, String queue, String position) {
+    public Challenge(String opponentName, String challengerName, int queue, String position) {
         this.opponentName = opponentName;
         this.challengerName = challengerName;
         this.queue = queue;
@@ -39,7 +39,7 @@ public class Challenge {
         opponentGames.add(opponentsGame);
     }
 
-    public String getQueue() {
+    public int getQueue() {
         return queue;
     }
 
@@ -47,6 +47,13 @@ public class Challenge {
         return position;
     }
 
+    /**
+     * Calculates the result of the challenge over the course of all games
+     * There are 10 categorizes to score in and for each category the challenger
+     * has a higher value then the opponent, the challenger is awarded one point
+     *
+     * @return list with the points for the challenger over time
+     */
     public List<Integer> getResultPoints() {
         List<Integer> results = new ArrayList<>();
         double kdaChallenger;
@@ -63,7 +70,8 @@ public class Challenge {
         double earlyGoldDiffOpponent;
         double visionScorePerHourChallenger;
         double visionScorePerHourOpponent;
-        for (int i = 0; i < challengerGames.size(); i++) {
+        int challeneProgress = Math.min(challengerGames.size(), opponentGames.size());
+        for (int i = 0; i < challeneProgress; i++) {
             int points = 0;
             ParticipantStatsTimeline ChallengerGame = challengerGames.get(i);
             ParticipantStatsTimeline opponentGame = opponentGames.get(i);
