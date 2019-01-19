@@ -1,11 +1,16 @@
 package de.drumcat.riotapichallengefx.ui;
 
+import de.drumcat.riotapichallengefx.domain.Challenge;
 import de.drumcat.riotapichallengefx.service.BuddyApiService;
+import de.drumcat.riotapichallengefx.service.ChallengeService;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -13,22 +18,45 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Controller;
 
+import java.util.Map;
+
 @Controller
 public class BuddyListController {
 
+    private ChallengeController challengeController;
+
     @FXML
     private ListView<String> listViewBuddy;
+
+    @FXML
+    private Button addFavoriteButton;
+
+    @FXML
+    private ListView<String> listViewActiveChallenges;
 
     @FXML
     private AnchorPane anchorPaneBuddy;
 
     @FXML
     private TextField textBoxBuddy;
-    private ChallengeController challengeController;
 
     @FXML
     public void initialize() {
+        addFavoriteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+//                listViewActiveChallenges.getItems().(listViewBuddy.getSelectionModel().getSelectedItems());
+                ObservableList<String> items = listViewActiveChallenges.getItems();
+                ObservableList<String> selectedItems = listViewBuddy.getSelectionModel().getSelectedItems();
+                if(selectedItems != null && !selectedItems.isEmpty())
+                for(String selected : selectedItems){
+                    if(!items.contains(selected)) {
+                        items.add(selected);
+                    }
+                }
+            }
+        });
         createContent();
+        createActiveChallengeContent();
     }
 
     @FXML
@@ -74,6 +102,11 @@ public class BuddyListController {
         return anchorPaneBuddy;
     }
 
+    public Parent createActiveChallengeContent() {
+        searchChallenges();
+        return anchorPaneBuddy;
+    }
+
     private void searchInBuddies(String input) {
         BuddyApiService buddyApiService = new BuddyApiService();
         input = input.toUpperCase();
@@ -84,5 +117,14 @@ public class BuddyListController {
             }
         }
         listViewBuddy.setItems(subentries);
+    }
+
+    private void searchChallenges() {
+        ChallengeService challengeService = new ChallengeService();
+        ObservableList<String> subentries = FXCollections.observableArrayList();
+        for ( Map.Entry<String, Challenge> entry: challengeService.getChallengesFromDB().entrySet() ) {
+                subentries.add(entry.getKey());
+        }
+        listViewActiveChallenges.setItems(subentries);
     }
 }

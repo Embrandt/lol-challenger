@@ -2,6 +2,7 @@ package de.drumcat.riotapichallengefx.ui;
 
 import de.drumcat.riotapichallengefx.domain.Challenge;
 import de.drumcat.riotapichallengefx.domain.ParticipantStatsTimeline;
+import de.drumcat.riotapichallengefx.service.ChallengeService;
 import de.drumcat.riotapichallengefx.service.ClientStatsApiService;
 import de.drumcat.riotapichallengefx.service.MatchStatsApiService;
 import javafx.fxml.FXML;
@@ -34,8 +35,7 @@ import java.util.stream.Collectors;
 public class ChallengeController {
     private final static Logger logger = LogManager.getLogger(ChallengeController.class);
 
-    EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
-    EntityManager entityManager = factory.createEntityManager();
+    ChallengeService challengeService = new ChallengeService();
 
     public ChoiceBox<LANE> laneChoice;
     public ChoiceBox<QUEUE> queueChoice;
@@ -46,7 +46,7 @@ public class ChallengeController {
     public Label yourNameLabel;
     public Label opponentNameLabel;
     public Button forfeitButton;
-    private Map<String, Challenge> runningChallenges = getChallengesFromDB();
+    private Map<String, Challenge> runningChallenges = challengeService.getChallengesFromDB();
     private Map<Long, Match> cachedMatches;
     private MatchStatsApiService matchStatsApiService;
     private XYChart.Series<Number, Number> pointsChallenger;
@@ -88,7 +88,7 @@ public class ChallengeController {
 //        challenge.setTimeStarted(System.currentTimeMillis());
         System.out.println("challenge = " + challenge);
         runningChallenges.put(opponentNameLabel.getText(), challenge);
-        persistChallenge(challenge);
+        challengeService.persistChallenge(challenge);
         refreshGames(challenge);
         fillChart(challenge.getResultPoints());
         showActiveChallenge(true);
@@ -222,29 +222,5 @@ public class ChallengeController {
     private enum QUEUE {
         RANKED_SOLO,
         RANKED_FLEX,
-    }
-
-    private Map<String, Challenge> getChallengesFromDB() {
-        //Find all entries in challenge database
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Challenge> cq = cb.createQuery(Challenge.class);
-        Root<Challenge> rootEntry = cq.from(Challenge.class);
-        CriteriaQuery<Challenge> all = cq.select(rootEntry);
-        TypedQuery<Challenge> allQuery = entityManager.createQuery(all);
-        List<Challenge> resultList = allQuery.getResultList();
-
-        Map<String, Challenge> challengeMap = new HashMap<>();
-        if (resultList != null && !resultList.isEmpty()) {
-            for (Challenge challenge : resultList) {
-                challengeMap.put(challenge.getOpponentName(), challenge);
-            }
-        }
-        return challengeMap;
-    }
-
-    private void persistChallenge(Challenge challenge){
-        entityManager.getTransaction().begin();
-        entityManager.persist(challenge);
-        entityManager.getTransaction().commit();
     }
 }

@@ -113,7 +113,8 @@ public class RiotApiChallengeFxApplication extends Application {
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("Riot API Challenge 2018");
-        primaryStage.setScene(new Scene(root, 100, 57));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
