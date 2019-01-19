@@ -92,7 +92,17 @@ public class ChallengeController {
         refreshGames(challenge);
         fillChart(challenge.getResultPoints());
         showActiveChallenge(true);
-        //TODO send a message to opponent
+
+        // construct a chat message and send it to your opponent
+        ClientStatsApiService clientApiService = new ClientStatsApiService();
+        StringBuilder chatMessage = new StringBuilder("Hi ");
+        chatMessage.append(opponentNameLabel.getText())
+                .append("\n let's have a challenge: Who is better at ")
+                .append(laneChoice.getValue().toString().toLowerCase())
+                .append(" in ")
+                .append(queueChoice.getValue().toString().toLowerCase())
+                .append(" within the next 10 games?");
+        //clientApiService.sendMessage(opponentNameLabel.getText(), chatMessage.toString());
     }
 
     /**

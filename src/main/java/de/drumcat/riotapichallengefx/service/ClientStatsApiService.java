@@ -32,6 +32,19 @@ public class ClientStatsApiService {
     }
 
     /**
+     * Sends a simple text message to a given user
+     *
+     * @param username name of the user to send the message to
+     * @param message  message to send
+     */
+    public void sendMessage(String username, String message) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(BASE_URL + PORT + "/lol-game-client-chat/v1/instant-messages?summonerName=" + username +
+                        "&message=" + message, HttpMethod.POST,
+                new HttpEntity<>(createHttpHeaders()), new ParameterizedTypeReference<List<UserStatsDto>>() {
+                });
+    }
+    /**
      * Gets the current logged in user
      *
      * @return the current logged in user
