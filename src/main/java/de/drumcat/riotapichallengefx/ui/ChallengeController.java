@@ -19,23 +19,13 @@ import net.rithms.riot.api.endpoints.match.dto.MatchReference;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChallengeController {
     private final static Logger logger = LogManager.getLogger(ChallengeController.class);
 
-    ChallengeService challengeService = new ChallengeService();
+    private ChallengeService challengeService = new ChallengeService();
 
     public ChoiceBox<LANE> laneChoice;
     public ChoiceBox<QUEUE> queueChoice;
@@ -51,6 +41,9 @@ public class ChallengeController {
     private MatchStatsApiService matchStatsApiService;
     private XYChart.Series<Number, Number> pointsChallenger;
     private XYChart.Series<Number, Number> pointsOpponent;
+
+    public ChallengeController() {
+    }
 
     /**
      * Helper function to fill the points for a running challenger into a XYChart
@@ -92,9 +85,8 @@ public class ChallengeController {
         if (laneChoice.getValue() == LANE.BOTTOM) {
             challenge.setRole("DUO_CARRY");
         }
-        challenge.setTimeStarted(1544439601880L); //TODO remove test value
-//        challenge.setTimeStarted(System.currentTimeMillis());
-        System.out.println("challenge = " + challenge);
+//        challenge.setTimeStarted(1544439601880L); //TODO remove test value
+        challenge.setTimeStarted(System.currentTimeMillis());
         runningChallenges.put(opponentNameLabel.getText(), challenge);
         challengeService.persistChallenge(challenge);
         refreshGames(challenge);
@@ -103,14 +95,13 @@ public class ChallengeController {
 
         // construct a chat message and send it to your opponent
         ClientStatsApiService clientApiService = new ClientStatsApiService();
-        StringBuilder chatMessage = new StringBuilder("Hi ");
-        chatMessage.append(opponentNameLabel.getText())
-                .append("\n let's have a challenge: Who is better at ")
-                .append(laneChoice.getValue().toString().toLowerCase())
-                .append(" in ")
-                .append(queueChoice.getValue().toString().toLowerCase())
-                .append(" within the next 10 games?");
-        //clientApiService.sendMessage(opponentNameLabel.getText(), chatMessage.toString());
+        String chatMessage = "Hi " + opponentNameLabel.getText() +
+                "\n let's have a challenge: Who is better at " +
+                laneChoice.getValue().toString().toLowerCase() +
+                " in " +
+                queueChoice.getValue().toString().toLowerCase() +
+                " within the next 10 games?";
+        clientApiService.sendMessage(opponentNameLabel.getText(), chatMessage);
     }
 
     /**
@@ -157,7 +148,7 @@ public class ChallengeController {
             challenge.addOpponentsGame(gameData);
         }
         //TODO send message if challenge is over
-        // TODO redraw chart
+        fillChart(challenge.getResultPoints());
     }
 
     /**
@@ -220,13 +211,25 @@ public class ChallengeController {
         opponentNameLabel.setText("Opponent");
         startButton.setOnAction(event -> startChallenge());
         forfeitButton.setOnAction(event -> cancelChallenge());
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                for (Challenge challenge : runningChallenges.values()) {
+                    refreshGames(challenge);
+                    logger.info("Games refreshed");
+                }
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, 0, 300000);
     }
 
     /**
      * Cancel an active challenge with the current selected opponent
      */
     private void cancelChallenge() {
-        runningChallenges.remove(opponentNameLabel.getText());
+        Challenge removedEntry = runningChallenges.remove(opponentNameLabel.getText());
+        challengeService.removeChallenge(removedEntry);
         showActiveChallenge(false);
     }
 

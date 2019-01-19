@@ -18,7 +18,6 @@ import javax.net.ssl.X509TrustManager;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.awt.*;
 import java.io.File;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
@@ -28,8 +27,9 @@ public class RiotApiChallengeFxApplication extends Application {
 
     private static final Logger logger = LogManager.getLogger(RiotApiChallengeFxApplication.class);
 
-    EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
-    EntityManager entityManager = factory.createEntityManager();
+    private EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit
+    // here
+    private EntityManager entityManager = factory.createEntityManager();
 
     static {
         // Abschalten der Verifikation von SLL-Zertifikaten.
@@ -84,7 +84,7 @@ public class RiotApiChallengeFxApplication extends Application {
     public void start(Stage primaryStage) throws Exception{
         ClientPortParserService clientPortParserService = new ClientPortParserService();
 
-        File file = null;
+        File file;
         if(entityManager.find(PropertiesDto.class, "lockfilepath") == null) {
             final FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Please select lockfile from /Riot Games/League of Legends");
@@ -114,7 +114,7 @@ public class RiotApiChallengeFxApplication extends Application {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         primaryStage.setTitle("Riot API Challenge 2018");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
+//        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

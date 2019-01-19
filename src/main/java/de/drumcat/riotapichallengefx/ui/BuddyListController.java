@@ -61,9 +61,12 @@ public class BuddyListController {
 
     @FXML
     public void handleMouseClick(MouseEvent arg0) {
-        String selectedItem = listViewBuddy.getSelectionModel().getSelectedItem();
-        challengeController.showUser(selectedItem);
-        System.out.println("clicked on " + selectedItem);
+        if (arg0.getSource() instanceof ListView) {
+            ListView<String> clickedView = (ListView) arg0.getSource();
+            String selectedItem = clickedView.getSelectionModel().getSelectedItem();
+            challengeController.showUser(selectedItem);
+            System.out.println("clicked on " + selectedItem);
+        }
     }
 
     /**

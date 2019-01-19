@@ -3,10 +3,11 @@ package de.drumcat.riotapichallengefx.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 @Entity
 @Table(name = "CHALLENGE")
-public class Challenge {
+public class Challenge extends Observable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
@@ -53,6 +54,8 @@ public class Challenge {
      */
     public void addChallengerGame(ParticipantStatsTimeline challengersGame) {
         challengerGames.add(challengersGame);
+//        notifyObservers();
+
     }
 
     /**
@@ -62,6 +65,7 @@ public class Challenge {
      */
     public void addOpponentsGame(ParticipantStatsTimeline opponentsGame) {
         opponentGames.add(opponentsGame);
+//        notifyObservers();
     }
 
     public int getQueue() {
