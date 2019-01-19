@@ -24,6 +24,8 @@ public class Challenge {
     @Column
     private String position;
     @Column
+    private String role;
+    @Column
     private long timeStarted;
 
     public Challenge(){}
@@ -35,6 +37,10 @@ public class Challenge {
         this.position = position;
         challengerGames = new ArrayList<>();
         opponentGames = new ArrayList<>();
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     /**
@@ -146,5 +152,13 @@ public class Challenge {
 
     public void setTimeStarted(long timeStarted) {
         this.timeStarted = timeStarted;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

@@ -82,8 +82,16 @@ public class ChallengeController {
         if (queueChoice.getValue().equals(QUEUE.RANKED_SOLO)) {
             queue = 420;
         }
+        String lane = laneChoice.getValue().toString();
         Challenge challenge = new Challenge(opponentNameLabel.getText(), yourNameLabel.getText(), queue,
-                laneChoice.getValue().toString());
+                lane);
+        if (laneChoice.getValue() == LANE.SUPPORT) {
+            challenge.setRole("DUO_SUPPORT");
+            challenge.setPosition(LANE.BOTTOM.toString());
+        }
+        if (laneChoice.getValue() == LANE.BOTTOM) {
+            challenge.setRole("DUO_CARRY");
+        }
         challenge.setTimeStarted(1544439601880L); //TODO remove test value
 //        challenge.setTimeStarted(System.currentTimeMillis());
         System.out.println("challenge = " + challenge);
@@ -168,6 +176,7 @@ public class ChallengeController {
             MatchList matchListByUser = matchStatsApiService.getMatchListByUser(username, startTime, queue);
             List<MatchReference> filteredList = matchListByUser.getMatches().stream()
                     .filter(matchReference -> matchReference.getLane().equals(challenge.getPosition()))
+                    .filter(matchReference -> challenge.getRole() == null || challenge.getRole().equals(matchReference.getRole()))
                     .limit(10)
                     .collect(Collectors.toList());
 
@@ -226,7 +235,7 @@ public class ChallengeController {
         BOTTOM,
         JUNGLE,
         TOP,
-        SUPPORT //TODO add difference between support and ADC
+        SUPPORT
     }
 
     private enum QUEUE {
