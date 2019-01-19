@@ -26,6 +26,8 @@ public class Challenge {
     @Column
     private long timeStarted;
 
+    public Challenge(){}
+
     public Challenge(String opponentName, String challengerName, int queue, String position) {
         this.opponentName = opponentName;
         this.challengerName = challengerName;
