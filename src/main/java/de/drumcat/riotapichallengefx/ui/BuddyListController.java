@@ -31,7 +31,6 @@ public class BuddyListController {
     }
     @FXML
     public void initialize() {
-        BuddyApiService buddyApiService = new BuddyApiService();
         createContent();
     }
 

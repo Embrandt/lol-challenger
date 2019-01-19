@@ -20,9 +20,9 @@ import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadPropertie
 @Service
 public class BuddyApiService {
 
-    static final String KEY = loadProperties("application.properties").get("rift.explorer.key").toString();
+    static final String KEY = System.getProperty("key");
 
-    static final String PORT = loadProperties("application.properties").get("rift.explorer.port").toString();
+    static final String PORT = System.getProperty("port");
 
     static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();
 

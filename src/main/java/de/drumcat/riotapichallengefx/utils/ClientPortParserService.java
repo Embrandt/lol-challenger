@@ -19,29 +19,18 @@ public class ClientPortParserService {
         String cvsSplitBy = ":";
         String port = "";
         String key = "";
-try {
-    BufferedReader br = new BufferedReader(new FileReader(csvFile));
-    while ((line = br.readLine()) != null) {
-        String[] client = line.split(cvsSplitBy);
-        port = client[2];
-        key = Base64.getEncoder().encodeToString(("riot:" + client[3]).getBytes());
-    }
-
-    InputStream propertyAsStream = getClass().getClassLoader().getResourceAsStream("application.properties");
-    String pathProp = getClass().getClassLoader().getResource("application.properties").getPath();
-    Properties props = new Properties();
-    props.load(propertyAsStream);
-    propertyAsStream.close();
-
-    FileOutputStream out = new FileOutputStream(pathProp);
-    props.setProperty("rift.explorer.key", key);
-    props.setProperty("rift.explorer.port", port);
-    props.store(out, null);
-    out.close();
-}catch(Exception ex){
-   return false;
-}
-
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] client = line.split(cvsSplitBy);
+                port = client[2];
+                key = Base64.getEncoder().encodeToString(("riot:" + client[3]).getBytes());
+            }
+            System.setProperty("key", key);
+            System.setProperty("port", port);
+        } catch (Exception ex) {
+            return false;
+        }
         return true;
     }
 }
