@@ -28,6 +28,9 @@ public class RiotApiChallengeFxApplication extends Application {
 
     private static final Logger logger = LogManager.getLogger(RiotApiChallengeFxApplication.class);
 
+    EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
+    EntityManager entityManager = factory.createEntityManager();
+
     static {
         // Abschalten der Verifikation von SLL-Zertifikaten.
         // Notwendig für die Testumgebungen / bei selbstsignierten Zertifikaten.
@@ -79,9 +82,6 @@ public class RiotApiChallengeFxApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
-        EntityManager entityManager = factory.createEntityManager();
         ClientPortParserService clientPortParserService = new ClientPortParserService();
 
         File file = null;
@@ -115,6 +115,12 @@ public class RiotApiChallengeFxApplication extends Application {
         primaryStage.setTitle("Riot API Challenge 2018");
         primaryStage.setScene(new Scene(root, 100, 57));
         primaryStage.show();
+    }
+
+    @Override
+    public void stop(){
+        logger.info("Closed UI");
+        System.exit(0);
     }
 
 }
