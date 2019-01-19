@@ -18,7 +18,7 @@ public class MainController {
     private BuddyListController buddyListViewController;
 
     @FXML
-    private ChallengeControler challengeViewController;
+    private ChallengeController challengeViewController;
 
     public void initialize() {
         buddyListViewController.setChallengeController(challengeViewController);

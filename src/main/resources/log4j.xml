@@ -8,7 +8,9 @@
             <param name="ConversionPattern" value="%-5p %c{1} - %m%n"/>
         </layout>
     </appender>
-
+    <category name="org.hibernate">
+        <priority value="ERROR" />
+    </category>
     <root>
         <priority value ="debug" />
         <appender-ref ref="console" />

@@ -24,7 +24,7 @@ public class BuddyListController {
 
     @FXML
     private TextField textBoxBuddy;
-    private ChallengeControler challengeControler;
+    private ChallengeController challengeController;
 
     @FXML
     public void initialize() {
@@ -34,7 +34,7 @@ public class BuddyListController {
     @FXML
     public void handleMouseClick(MouseEvent arg0) {
         String selectedItem = listViewBuddy.getSelectionModel().getSelectedItem();
-        challengeControler.showUser(selectedItem);
+        challengeController.showUser(selectedItem);
         System.out.println("clicked on " + selectedItem);
     }
 
@@ -44,8 +44,8 @@ public class BuddyListController {
      *
      * @param challengeController controller for the challenge view
      */
-    void setChallengeController(ChallengeControler challengeController) {
-        this.challengeControler = challengeController;
+    void setChallengeController(ChallengeController challengeController) {
+        this.challengeController = challengeController;
     }
 
     public Parent createContent() {

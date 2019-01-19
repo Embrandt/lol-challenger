@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-            fx:controller="de.drumcat.riotapichallengefx.ui.ChallengeControler">
+            fx:controller="de.drumcat.riotapichallengefx.ui.ChallengeController">
 
     <GridPane fx:id="startingChallenge" alignment="TOP_CENTER" layoutY="14.0" maxHeight="250.0" maxWidth="450.0"
               minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="450.0" snapToPixel="false"
