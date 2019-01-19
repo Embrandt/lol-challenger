@@ -28,7 +28,10 @@ public class Challenge {
     @Column
     private long timeStarted;
 
-    public Challenge(){}
+    public Challenge() {
+        challengerGames = new ArrayList<>();
+        opponentGames = new ArrayList<>();
+    }
 
     public Challenge(String opponentName, String challengerName, int queue, String position) {
         this.opponentName = opponentName;

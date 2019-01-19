@@ -46,7 +46,7 @@ public class ChallengeController {
     public Label yourNameLabel;
     public Label opponentNameLabel;
     public Button forfeitButton;
-    private Map<String, Challenge> runningChallenges = getChallengesFromDB();
+    private Map<String, Challenge> runningChallenges;
     private Map<Long, Match> cachedMatches;
     private MatchStatsApiService matchStatsApiService;
     private XYChart.Series<Number, Number> pointsChallenger;
@@ -205,7 +205,7 @@ public class ChallengeController {
         standingChart.getData().add(pointsOpponent);
         // initialize api service and caching structures
         matchStatsApiService = new MatchStatsApiService();
-        runningChallenges = new HashMap<>();
+        runningChallenges = getChallengesFromDB();
         cachedMatches = new HashMap<>();
         // initialize form with values
         laneChoice.getItems().addAll(LANE.values());
