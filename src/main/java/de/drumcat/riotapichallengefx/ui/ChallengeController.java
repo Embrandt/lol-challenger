@@ -46,7 +46,7 @@ public class ChallengeController {
     public Label yourNameLabel;
     public Label opponentNameLabel;
     public Button forfeitButton;
-    private Map<String, Challenge> runningChallenges = challengeService.getChallengesFromDB();
+    private Map<String, Challenge> runningChallenges;
     private Map<Long, Match> cachedMatches;
     private MatchStatsApiService matchStatsApiService;
     private XYChart.Series<Number, Number> pointsChallenger;
@@ -82,8 +82,16 @@ public class ChallengeController {
         if (queueChoice.getValue().equals(QUEUE.RANKED_SOLO)) {
             queue = 420;
         }
+        String lane = laneChoice.getValue().toString();
         Challenge challenge = new Challenge(opponentNameLabel.getText(), yourNameLabel.getText(), queue,
-                laneChoice.getValue().toString());
+                lane);
+        if (laneChoice.getValue() == LANE.SUPPORT) {
+            challenge.setRole("DUO_SUPPORT");
+            challenge.setPosition(LANE.BOTTOM.toString());
+        }
+        if (laneChoice.getValue() == LANE.BOTTOM) {
+            challenge.setRole("DUO_CARRY");
+        }
         challenge.setTimeStarted(1544439601880L); //TODO remove test value
 //        challenge.setTimeStarted(System.currentTimeMillis());
         System.out.println("challenge = " + challenge);
@@ -92,7 +100,17 @@ public class ChallengeController {
         refreshGames(challenge);
         fillChart(challenge.getResultPoints());
         showActiveChallenge(true);
-        //TODO send a message to opponent
+
+        // construct a chat message and send it to your opponent
+        ClientStatsApiService clientApiService = new ClientStatsApiService();
+        StringBuilder chatMessage = new StringBuilder("Hi ");
+        chatMessage.append(opponentNameLabel.getText())
+                .append("\n let's have a challenge: Who is better at ")
+                .append(laneChoice.getValue().toString().toLowerCase())
+                .append(" in ")
+                .append(queueChoice.getValue().toString().toLowerCase())
+                .append(" within the next 10 games?");
+        //clientApiService.sendMessage(opponentNameLabel.getText(), chatMessage.toString());
     }
 
     /**
@@ -158,6 +176,7 @@ public class ChallengeController {
             MatchList matchListByUser = matchStatsApiService.getMatchListByUser(username, startTime, queue);
             List<MatchReference> filteredList = matchListByUser.getMatches().stream()
                     .filter(matchReference -> matchReference.getLane().equals(challenge.getPosition()))
+                    .filter(matchReference -> challenge.getRole() == null || challenge.getRole().equals(matchReference.getRole()))
                     .limit(10)
                     .collect(Collectors.toList());
 
@@ -186,7 +205,7 @@ public class ChallengeController {
         standingChart.getData().add(pointsOpponent);
         // initialize api service and caching structures
         matchStatsApiService = new MatchStatsApiService();
-        runningChallenges = new HashMap<>();
+        runningChallenges = challengeService.getChallengesFromDB();
         cachedMatches = new HashMap<>();
         // initialize form with values
         laneChoice.getItems().addAll(LANE.values());
@@ -216,7 +235,7 @@ public class ChallengeController {
         BOTTOM,
         JUNGLE,
         TOP,
-        SUPPORT //TODO add difference between support and ADC
+        SUPPORT
     }
 
     private enum QUEUE {

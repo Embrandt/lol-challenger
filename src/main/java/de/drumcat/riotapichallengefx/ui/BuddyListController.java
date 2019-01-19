@@ -76,7 +76,7 @@ public class BuddyListController {
         this.challengeController = challengeController;
     }
 
-    public Parent createContent() {
+    private Parent createContent() {
         // create a console for logging key events
         // listen on console items and remove old ones when we get over 20 items
         ListChangeListener<? super String> listener =
@@ -93,12 +93,8 @@ public class BuddyListController {
 
         textBoxBuddy.setPromptText("Search Buddy");
         // add a key listeners
-        textBoxBuddy.setOnKeyPressed((KeyEvent ke) -> {
-            listViewBuddy.refresh();
-        });
-        textBoxBuddy.setOnKeyReleased((KeyEvent ke) -> {
-            searchInBuddies(ke.getText());
-        });
+        textBoxBuddy.setOnKeyPressed((KeyEvent ke) -> listViewBuddy.refresh());
+        textBoxBuddy.setOnKeyReleased((KeyEvent ke) -> searchInBuddies(textBoxBuddy.getText()));
         return anchorPaneBuddy;
     }
 
