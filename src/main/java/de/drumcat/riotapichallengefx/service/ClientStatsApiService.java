@@ -17,9 +17,9 @@ import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadPropertie
 @Service
 public class ClientStatsApiService {
 
-    private static final String KEY = loadProperties("application.properties").get("rift.explorer.key").toString();
+    private static final String KEY = System.getProperty("key");
 
-    private static final String PORT = loadProperties("application.properties").get("rift.explorer.port").toString();
+    private static final String PORT = System.getProperty("port");
 
     private static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();
 

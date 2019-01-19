@@ -82,20 +82,33 @@ public class RiotApiChallengeFxApplication extends Application {
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("test"); //name of persistence unit here
         EntityManager entityManager = factory.createEntityManager();
+        ClientPortParserService clientPortParserService = new ClientPortParserService();
 
         File file = null;
         if(entityManager.find(PropertiesDto.class, "lockfilepath") == null) {
             final FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Please select lockfile from /Riot Games/League of Legends");
             file = fileChooser.showOpenDialog(primaryStage);
-            ClientPortParserService clientPortParserService = new ClientPortParserService();
-            clientPortParserService.parseClientLockfile(file.getAbsolutePath());
-            PropertiesDto propertiesDto =  new PropertiesDto();
-            propertiesDto.setKey("lockfilepath");
-            propertiesDto.setValue(file.getAbsolutePath());
-            entityManager.getTransaction().begin();
-            entityManager.persist(propertiesDto);
-            entityManager.getTransaction().commit();
+            boolean findLockfilePath = clientPortParserService.parseClientLockfile(file.getAbsolutePath());
+            logger.info("lockfile parsed " + findLockfilePath);
+            if(findLockfilePath){
+                PropertiesDto propertiesDto =  new PropertiesDto();
+                propertiesDto.setKey("lockfilepath");
+                propertiesDto.setValue(file.getAbsolutePath());
+                entityManager.getTransaction().begin();
+                entityManager.persist(propertiesDto);
+                entityManager.getTransaction().commit();
+                logger.info("Transaction committed");
+            }else{
+                start(primaryStage);
+            }
+        }else{
+            PropertiesDto propertiesDto = entityManager.find(PropertiesDto.class, "lockfilepath");
+            String lockFilePath = propertiesDto.getValue();
+            boolean lockfileParsed = clientPortParserService.parseClientLockfile(lockFilePath);
+            if(!lockfileParsed){
+                start(primaryStage);
+            }
         }
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));

@@ -1,17 +1,37 @@
 package de.drumcat.riotapichallengefx.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "STATS")
 public class UserStatsDto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
+    @Column
     private int championId;
+    @Column
     private long gameId;
+    @Column
     private int gamesCalculated;
+    @Column
     private String lane;
+    @Column
     private String platformId;
+    @Column
     private String puuid;
+    @Column
     private String queueType;
+    @Column
     private String role;
+    @Column
     private int season;
+    @Transient
     private StatsDto statsDto;
+    @Column
     private int teamId;
+    @Column
     private long timestamp;
 
 

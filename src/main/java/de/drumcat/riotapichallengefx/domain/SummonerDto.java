@@ -1,18 +1,38 @@
 package de.drumcat.riotapichallengefx.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "BUDDIES")
 public class SummonerDto {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
+    @Column
     private float accountId;
+    @Column
     private String displayName;
+    @Column
     private String internalName;
+    @Column
     private String lastSeasonHighestRank;
+    @Column
     private float percentCompleteForNextLevel;
+    @Column
     private float profileIconId;
+    @Column
     private String puuid;
+    @Transient
     private RerollPointsDto rerollPointsDto;
+    @Column
     private float summonerId;
+    @Column
     private float summonerLevel;
+    @Column
     private float xpSinceLastLevel;
+    @Column
     private float xpUntilNextLevel;
 
 

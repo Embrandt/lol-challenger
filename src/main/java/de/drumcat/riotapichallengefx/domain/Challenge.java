@@ -1,15 +1,29 @@
 package de.drumcat.riotapichallengefx.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "CHALLENGE")
 public class Challenge {
-    private final String opponentName;
-    private final String challengerName;
-    private final List<ParticipantStatsTimeline> challengerGames;
-    private final List<ParticipantStatsTimeline> opponentGames;
-    private final int queue;
-    private final String position;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
+    @Column
+    private String opponentName;
+    @Column
+    private String challengerName;
+    @Transient
+    private List<ParticipantStatsTimeline> challengerGames;
+    @Transient
+    private List<ParticipantStatsTimeline> opponentGames;
+    @Column
+    private int queue;
+    @Column
+    private String position;
+    @Column
     private long timeStarted;
 
     public Challenge(String opponentName, String challengerName, int queue, String position) {

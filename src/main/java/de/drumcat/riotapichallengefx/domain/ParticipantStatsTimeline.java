@@ -3,11 +3,21 @@ package de.drumcat.riotapichallengefx.domain;
 import net.rithms.riot.api.endpoints.match.dto.ParticipantStats;
 import net.rithms.riot.api.endpoints.match.dto.ParticipantTimeline;
 
-public class ParticipantStatsTimeline {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "STATS_TIMELINE")
+public class ParticipantStatsTimeline {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Long id;
+    @Column
     private ParticipantStats stats;
+    @Column
     private ParticipantTimeline timeline;
     // game time in seconds
+    @Column
     private long timePlayed;
 
     public ParticipantStats getStats() {
