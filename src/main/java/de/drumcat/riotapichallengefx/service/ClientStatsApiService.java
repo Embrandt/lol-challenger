@@ -1,5 +1,6 @@
 package de.drumcat.riotapichallengefx.service;
 
+import de.drumcat.riotapichallengefx.domain.SummonerDto;
 import de.drumcat.riotapichallengefx.domain.UserStatsDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -16,11 +17,11 @@ import static de.drumcat.riotapichallengefx.utils.PropertiesLoader.loadPropertie
 @Service
 public class ClientStatsApiService {
 
-    static final String KEY = System.getProperty("key");
+    private static final String KEY = System.getProperty("key");
 
-    static final String PORT = System.getProperty("port");
+    private static final String PORT = System.getProperty("port");
 
-    static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();;
+    private static final String BASE_URL = loadProperties("application.properties").get("api.base.url").toString();
 
     public List<UserStatsDto> getUserStatsByPuuid(String puuid) {
         RestTemplate restTemplate = new RestTemplate();
@@ -30,6 +31,20 @@ public class ClientStatsApiService {
         return response.getBody();
     }
 
+    /**
+     * Gets the current logged in user
+     *
+     * @return the current logged in user
+     */
+    public SummonerDto getCurrentUser() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<SummonerDto> response = restTemplate.exchange(BASE_URL + PORT + "lol-summoner/v1" +
+                        "/current-summoner", HttpMethod.GET, new HttpEntity<>(createHttpHeaders()),
+                new ParameterizedTypeReference<SummonerDto>() {
+                });
+
+        return response.getBody();
+    }
     private HttpHeaders createHttpHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",

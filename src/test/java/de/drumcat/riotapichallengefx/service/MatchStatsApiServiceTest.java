@@ -1,7 +1,7 @@
 package de.drumcat.riotapichallengefx.service;
 
-import de.drumcat.riotapichallengefx.service.MatchStatsApiService;
 import net.rithms.riot.api.RiotApiException;
+import net.rithms.riot.api.endpoints.match.dto.Match;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -16,13 +16,14 @@ public class MatchStatsApiServiceTest {
     @Test(expected = RiotApiException.class)
     public void testGetMatches() throws RiotApiException {
         MatchStatsApiService matchStatsApiService = new MatchStatsApiService();
-        matchStatsApiService.getMatchListByUser("aischnei");
+        matchStatsApiService.getMatchListByUser("aischnei", -1L, 420);
     }
 
     @Test(expected = RiotApiException.class)
     public void testGetStats() throws RiotApiException {
         MatchStatsApiService matchStatsApiService = new MatchStatsApiService();
-       matchStatsApiService.getGameStatsAndTimelineByUser(1L, "aischnei");
+        Match matchByMatchId = matchStatsApiService.getMatchByMatchId(1L);
+        matchStatsApiService.getGameStatsAndTimelineByUser(matchByMatchId, "aischnei");
     }
 
     @Test(expected = RiotApiException.class)
