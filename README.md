@@ -16,3 +16,13 @@ Plans to improve
 - implement a "tilt-saver" a feature to compete with yourself and get a warning, when you drop way below your average stats
 - implement server for the calls to the RiotApi to keep the key protected
 - finetune the interface and fix some bugs like missing stats
+
+## Compile it yourself
+### Requirements
+To compile you need a RiotAPI key, and provide that in the properties file under `web.api.key` (/src/main/resources/application.properties)
+
+### External libraries
+All required libraries are maven enabled. We use these:
+- RiotApi Java library to gather the stats for each competition from the RiotApi (https://github.com/taycaldwell/riot-api-java)
+- Hibernate to store active challenges and results in a h2 database
+- Spring and jackson to wrap REST calls on the client in a common framework
